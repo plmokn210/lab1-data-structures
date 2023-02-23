@@ -7,7 +7,7 @@ def preToPostfix(prefix_expression):
     for i in range(len(prefix_expression) - 1, -1, -1):
         current = prefix_expression[i]
 
-        # If the current character isnt an operator, letter, or number, return error
+        # If there is input that isnt a valid character, return an error
         if current not in operators and not current.isalpha() and not current.isdigit():
             return "Error: equation contains invalid characters"
         
@@ -22,7 +22,6 @@ def preToPostfix(prefix_expression):
                 operand_2 = operands.pop()
                 operands.append(operand_1 + operand_2 + current)
             except IndexError:
-                # If there is an error, continue to the next line of equation
                 return "Error: equation not formatted properly"
 
     # Return the postfix expression
