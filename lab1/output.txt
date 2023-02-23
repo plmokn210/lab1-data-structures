@@ -1,0 +1,48 @@
+The output of *AB = AB*
+
+The output of $AB = AB$
+
+The output of +$AB*CD = AB$CD*+
+
+The output of -*AB$CD = AB*CD$-
+
+The output of /$AB$CD = AB$CD$/
+
+The output of +$ABC = AB$C+
+
+The output of +$AB$CD = AB$CD$+
+
+The output of $+AB*CD = AB+CD*$
+
+The output of /$AB$CD = AB$CD$/
+
+The output of $A+BC = ABC+$
+
+The output of $+ABC = AB+C$
+
+The output of *+A/BC$DE = ABC/+DE$*
+
+The output of -+ABC = AB+C-
+
+The output of -A+BC = ABC+-
+
+The output of $+-ABC+D-EF = AB-C+DEF-+$
+
+The output of -*A$B+C-DE*EF = ABCDE-+$*EF*-
+
+The output of **A+BC+C-BA = ABC+*CBA-+*
+
+The output of /A+BC+C*BA = CBA*+ABC+/
+
+The output of *-*-ABC+BA = Error: equation not formatted properly
+
+The output of /+/A-BC-BA = Error: equation not formatted properly
+
+The output of *$A+BC+C-BA = ABC+$CBA-+*
+
+The output of //A+B0-C+BA = AB0+/CBA+-/
+
+The output of *$A$BC+C-BA = ABC$$CBA-+*
+
+The output of <>3.2[][][] = Error: equation contains invalid characters
+
