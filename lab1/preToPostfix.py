@@ -53,6 +53,9 @@ def preToPostfix(input):
         # Concatenate the left and right expressions, followed by the operator character
         return left + right + char
     else:
+        # If the first character is not an operator, digit, or letter, return an error
+        if not char.isdigit() and not char.isalpha():
+            return "Error: equation contains invalid characters"
         # If the first character is not an operator, return it
         return char
 
