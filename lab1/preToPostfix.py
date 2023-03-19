@@ -44,8 +44,8 @@ def preToPostfix(input):
         # Get the left and right expressions by recursively calling preToPostfix on the input
         # Note that the left expression is the rest of the input after the first character, 
         # and the right expression is the rest of the input after the left expression
-        left = preToPostfix(input[1:])
         right = preToPostfix(input[len(preToPostfix(input[1:]))+1:])
+        left = preToPostfix(input[1:])
         # Check if either the left or right expression is None before concatenating them
         if left is None or right is None:
             # Return an empty string if either the left or right expression is None
