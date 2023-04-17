@@ -1,0 +1,23 @@
+To implement the Huffman Encoding Tree in Python, we can follow these steps:
+
+1. Read the frequency table from the given file.
+2. Create the Huffman Tree based on the frequency table.
+3. Preorder traversal of the Huffman Tree.
+4. Encode the input strings using the generated Huffman Tree.
+5. Decode the given encoded strings using the Huffman Tree.
+
+Here's the implementation:
+
+```python
+
+```
+
+You can now run the program using the provided `FreqTable.txt`, `ClearText.txt`, and `Encoded.txt` files.
+
+For the analysis part, you'll want to consider the following factors:
+
+1. Compare the compression efficiency of Huffman encoding versus conventional encoding schemes.
+2. Evaluate how different tie-breaking schemes affect the compression ratio.
+3. Discuss the data structures used in the implementation (heap, tree, dictionary) and their impact on the program's efficiency.
+
+You can then use the analysis as a basis for your final report on this assignment.
