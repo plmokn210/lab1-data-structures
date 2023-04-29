@@ -86,51 +86,42 @@ class LinkedListNode:
         self.data = data
         self.next = None
 
-def natural_merge_sort(head):
-    if head is None or head.next is None:
+def merge_sort_linked_list(head, count_dict):
+    if not head or not head.next:
         return head
-    
-    # Find all sorted runs in the list
-    runs = []
-    curr = head
-    while curr is not None:
-        run_head = curr
-        while curr.next is not None and curr.data <= curr.next.data:
-            curr = curr.next
-        runs.append(run_head)
-        curr = curr.next
-        
-    # Merge all the sorted runs together
-    while len(runs) > 1:
-        merged_runs = []
-        for i in range(0, len(runs), 2):
-            if i+1 < len(runs):
-                merged = merge(runs[i], runs[i+1])
-            else:
-                merged = runs[i]
-            merged_runs.append(merged)
-        runs = merged_runs
-        
-    return runs[0]
+    left_half, right_half = split_linked_list(head)
+    left_half = merge_sort_linked_list(left_half, count_dict)
+    right_half = merge_sort_linked_list(right_half, count_dict)
+    return merge_linked_lists(left_half, right_half, count_dict)
 
-def merge(left, right):
-    # Merge two sorted linked lists together
-    head = LinkedListNode(None)
-    curr = head
-    while left is not None and right is not None:
+def split_linked_list(head):
+    slow = head
+    fast = head.next
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    right_half = slow.next
+    slow.next = None
+    return head, right_half
+
+def merge_linked_lists(left, right, count_dict):
+    dummy = LinkedListNode(None)
+    curr = dummy
+    while left and right:
+        count_dict['comparisons'] += 1
         if left.data <= right.data:
             curr.next = left
-            curr = left
             left = left.next
         else:
             curr.next = right
-            curr = right
             right = right.next
-    if left is not None:
+        curr = curr.next
+        count_dict['exchanges'] += 1
+    if left:
         curr.next = left
     else:
         curr.next = right
-    return head.next
+    return dummy.next
 
 def sort_file(file_name):
     with open(file_name, 'r') as f:
@@ -144,27 +135,27 @@ def sort_file(file_name):
                 else:
                     curr.next = LinkedListNode(int(num))
                     curr = curr.next
-        sorted_data = natural_merge_sort(data)
-        return sorted_data
+        count_dict = {'comparisons': 0, 'exchanges': 0}
+        sorted_data = merge_sort_linked_list(data, count_dict)
+        return sorted_data, count_dict
 
 def main():
-    input_files = glob.glob('./50input/*.dat')
-    output_dir = './NaturalMergeSortOutput'
-    os.makedirs(output_dir, exist_ok=True)  # Create output directory if it doesn't exist
-    for input_file in input_files:
-        sorted_data = sort_file(input_file)
-        output_file = os.path.join(output_dir, 'Output' + os.path.basename(input_file))
-        with open(output_file, 'w') as f:
-            curr = sorted_data
-            while curr is not None:
-                f.write(str(curr.data) + '\n')
-                curr = curr.next
-        print(f'Sorted list for file {os.path.basename(input_file)}:')
-        curr = sorted_data
-        while curr is not None:
-            print(curr.data)
-            curr = curr.next
-        print(sorted_data)
+    input_dirs = ['./50input', './bigInput']
+    output_dir = './MergeSortOutput'
+    os.makedirs(output_dir, exist_ok=True)
+    
+    for input_dir in input_dirs:
+        input_files = glob.glob(input_dir + '/*.dat')
+        for input_file in input_files:
+            sorted_data, count_dict = sort_file(input_file)
+            output_file = os.path.join(output_dir, 'Output' + os.path.basename(input_file))
+            with open(output_file, 'w') as f:
+                if input_dir == './50input':
+                    curr = sorted_data
+                    while curr is not None:
+                        f.write(str(curr.data) + '\n')
+                        curr = curr.next
+                f.write(f"Comparisons: {count_dict['comparisons']}, Exchanges: {count_dict['exchanges']}\n")
 
 if __name__ == '__main__':
     main()
