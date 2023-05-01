@@ -1,0 +1,86 @@
+firstItemPivotOutput:
+median3Output:
+MergeSortOutput:
+quickSort50_output:
+quickSort100Output:
+	Outputran500.dat:
+		Comparisons: 10937
+		Exchanges: 2655
+	Outputrev10K.dat:
+		Comparisons: 49990149
+		Exchanges: 49990149
+	Outputran5K.dat:
+		Comparisons: 119070
+		Exchanges: 44270
+	Outputasc2K.dat:
+		Comparisons: 1999000
+		Exchanges: 1994149
+	Outputdup5K.dat:
+		Comparisons: 119499
+		Exchanges: 46763
+	Outputrev500-1.dat:
+		Comparisons: 119899
+		Exchanges: 119899
+	Outputdup10K.dat:
+		Comparisons: 251651
+		Exchanges: 104263
+	Outputrev5K.dat:
+		Comparisons: 12492649
+		Exchanges: 12492649
+	Outputdup2K.dat:
+		Comparisons: 45796
+		Exchanges: 16679
+	Outputasc500.dat:
+		Comparisons: 124750
+		Exchanges: 119899
+	Outputrev20K.dat:
+		Comparisons: 199985149
+		Exchanges: 199985149
+	Outputasc5K.dat:
+		Comparisons: 12497500
+		Exchanges: 12492649
+	Outputrev2K.dat:
+		Comparisons: 1994149
+		Exchanges: 1994149
+	Outputran2K.dat:
+		Comparisons: 48608
+		Exchanges: 17502
+	Outputdup20K.dat:
+		Comparisons: 561285
+		Exchanges: 256920
+	Outputasc10K.dat:
+		Comparisons: 49995000
+		Exchanges: 49990149
+	Outputran20K.dat:
+		Comparisons: 568946
+		Exchanges: 256174
+	Outputran1K.dat:
+		Comparisons: 21523
+		Exchanges: 7007
+	Outputrev1K.dat:
+		Comparisons: 494649
+		Exchanges: 494649
+	Outputdup1K.dat:
+		Comparisons: 21544
+		Exchanges: 7771
+	Outputasc50.dat:
+		Comparisons: 1225
+		Exchanges: 97
+	Outputrev50.dat:
+		Comparisons: 146
+		Exchanges: 97
+	Outputran10K.dat:
+		Comparisons: 266867
+		Exchanges: 107973
+	Outputasc20K.dat:
+		Comparisons: 199990000
+		Exchanges: 199985149
+	Outputasc1K.dat:
+		Comparisons: 499500
+		Exchanges: 494649
+	Outputran50.dat:
+		Comparisons: 1653
+		Exchanges: 196
+	Outputdup500.dat:
+		Comparisons: 10339
+		Exchanges: 2767
