@@ -1,43 +1,93 @@
 import os
 import glob
 
+#define a linked list node class
 class LinkedListNode:
     def __init__(self, data):
         self.data = data
         self.next = None
 
-def partition(head, pivot, count_dict):
-    left_head = LinkedListNode(None)
-    right_head = LinkedListNode(None)
-    left_curr = left_head
-    right_curr = right_head
+#quick sort function for a linked list (iterative version)
+def quick_sort_iterative(head):
+    if head is None or head.next is None:
+        return head, 0, 0
 
-    curr = head
-    while curr is not None:
-        count_dict['comparisons'] += 1
-        if curr.data < pivot:
-            left_curr.next = curr
-            left_curr = curr
+    compare_counter = 0
+    exchange_counter = 0
+    stack = [(head, None)]
+
+    #Continue sorting while there are still unprocessed segments
+    while stack:
+        start, end = stack.pop()
+
+        if start is None or start == end:
+            continue
+
+        # Choose pivot and initialize left and right partitions
+        pivot = start.data
+        left_head = LinkedListNode(None)
+        left_tail = left_head
+        right_head = LinkedListNode(None)
+        right_tail = right_head
+        curr = start.next
+        prev = start
+
+        # Partition the linked list based on the pivot
+        while curr != end:
+            compare_counter += 1
+            if curr.data < pivot:
+                exchange_counter += 1
+                left_tail.next = curr
+                left_tail = curr
+                prev.next = curr.next
+                curr = curr.next
+            else:
+                prev = curr
+                curr = curr.next
+
+        left_tail.next = None
+        right_tail.next = None
+
+        # Swap pivot with the last element of the left partition
+        start.data = left_tail.data
+        left_tail.data = pivot
+
+        # Process left and right partitions
+        left_sorted = left_head.next
+        if left_tail is not None and partition_size(left_sorted, left_tail) <= 100:
+            left_sorted = insertion_sort(left_sorted)
+            left_tail = get_tail(left_sorted)
         else:
-            right_curr.next = curr
-            right_curr = curr
-        curr = curr.next
-        count_dict['exchanges'] += 1
+            stack.append((left_sorted, left_tail))
 
-    left_curr.next = None
-    right_curr.next = None
+        if left_tail is not None:
+            right_sorted = left_tail.next
+            if partition_size(right_sorted, end) <= 100:
+                right_sorted = insertion_sort(right_sorted)
+            else:
+                stack.append((right_sorted, end))
 
-    return left_head.next, right_head.next
+    return head, compare_counter, exchange_counter
 
-def partition_size(head):
+# Calculate the size of the partition between the start and end nodes
+def partition_size(start, end):
     size = 0
-    curr = head
-    while curr is not None:
+    curr = start
+    while curr is not None and curr != end:
         size += 1
         curr = curr.next
     return size
 
-def insertion_sort(head, count_dict):
+#get tail node of a linked list
+def get_tail(head):
+    if head is None:
+        return None
+    while head.next is not None:
+        head = head.next
+    return head
+
+#insertion sort function for a linked list
+def insertion_sort(head):
     if head is None or head.next is None:
         return head
 
@@ -49,80 +99,19 @@ def insertion_sort(head, count_dict):
         curr = head
         head = head.next
 
-        count_dict['comparisons'] += 1
         if curr.data < sorted_head.data:
             curr.next = sorted_head
             sorted_head = curr
         else:
             prev = sorted_head
             while prev.next is not None and prev.next.data < curr.data:
-                count_dict['comparisons'] += 1
                 prev = prev.next
             curr.next = prev.next
             prev.next = curr
 
-        count_dict['exchanges'] += 1
-
     return sorted_head
 
-def quick_sort_insertion_100(head, count_dict):
-    if head is None or head.next is None:
-        return head
-
-    stack = [(head, None)]
-    sorted_head = LinkedListNode(None)
-    sorted_tail = sorted_head
-
-    while stack:
-        node, end = stack.pop()
-
-        if partition_size(node) <= 100:
-            sorted_sublist = insertion_sort(node, count_dict)
-            sorted_tail.next = sorted_sublist
-
-            while sorted_tail.next is not None:
-                sorted_tail = sorted_tail.next
-        else:
-            pivot = node.data
-            left_head, right_head = partition(node.next, pivot, count_dict)
-
-            sorted_tail.next = LinkedListNode(pivot)
-            sorted_tail = sorted_tail.next
-
-            if right_head is not None:
-                stack.append((right_head, None))
-
-            if left_head is not None:
-                stack.append((left_head, None))
-
-    return sorted_head.next
-
-
-def merge(left, right, pivot, count_dict):
-    head = LinkedListNode(None)
-    curr = head
-    while left is not None and left.data < pivot:
-        count_dict['comparisons'] += 1
-        curr.next = left
-        curr = left
-        left = left.next
-
-    curr.next = LinkedListNode(pivot)
-    curr = curr.next
-
-    while left is not None:
-        count_dict['comparisons'] += 1
-        curr.next = left
-        curr = left
-        left = left.next
-
-    while right is not None:
-        curr.next = right
-        curr = right
-        right = right.next
-
-    return head.next
-
+# Sort a file with the quick sort iterative algorithm
 def sort_file(file_name):
     with open(file_name, 'r') as f:
         lines = f.readlines()
@@ -135,34 +124,29 @@ def sort_file(file_name):
                 else:
                     curr.next = LinkedListNode(int(num))
                     curr = curr.next
-        count_dict = {'comparisons': 0, 'exchanges': 0}
-        sorted_data = quick_sort_insertion_100(data, count_dict)
-        return sorted_data, count_dict
+        sorted_data, compare_counter, exchange_counter = quick_sort_iterative(data)
+        return (sorted_data, compare_counter, exchange_counter)
 
+# Main function to process input files and sort them using the quick sort iterative algorithm
 def main():
-    input_files = glob.glob('./bigInput/*.dat')  # Update to read files from bigInput directory
+    input_dirs = ['./50input', './bigInput']
     output_dir = './quickSort100Output'
-    os.makedirs(output_dir, exist_ok=True)  # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
     
-    for input_file in input_files:
-        sorted_data, count_dict = sort_file(input_file)
-        output_file = os.path.join(output_dir, 'Output' + os.path.basename(input_file))
-        
-        with open(output_file, 'w') as f:
-            curr = sorted_data
-            while curr is not None:
-                f.write(str(curr.data) + '\n')
-                curr = curr.next
-            f.write(f"Comparisons: {count_dict['comparisons']}\n")
-            f.write(f"Exchanges: {count_dict['exchanges']}\n")
-        
-        print(f'Sorted list for file {os.path.basename(input_file)}:')
-        curr = sorted_data
-        while curr is not None:
-            print(curr.data)
-            curr = curr.next
-        
-        print(f"Exchanges: {count_dict['exchanges']}, Comparisons: {count_dict['comparisons']}")
+    # Process each input file in the input directories
+    for input_dir in input_dirs:
+        input_files = glob.glob(input_dir + '/*.dat')
+        for input_file in input_files:
+            sorted_data, compare_counter, exchange_counter = sort_file(input_file)
+            output_file = os.path.join(output_dir, 'Output' + os.path.basename(input_file))
+            
+            # Write the sorted data and statistics to the output file
+            with open(output_file, 'w') as f:
+                curr = sorted_data
+                while curr is not None:
+                    f.write(str(curr.data) + '\n')
+                    curr = curr.next
+                f.write(f'Comparisons: {compare_counter}, Exchanges: {exchange_counter}\n')
 
 if __name__ == '__main__':
     main()

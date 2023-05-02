@@ -1,11 +1,13 @@
 import os
 import glob
 
+#define a class for LinkedListNode
 class LinkedListNode:
     def __init__(self, data):
         self.data = data
         self.next = None
 
+#function to perform merge sort on a linked list with a provided count_dict for comparisons and exchanges
 def merge_sort_linked_list(head, count_dict):
     if not head or not head.next:
         return head
@@ -14,6 +16,7 @@ def merge_sort_linked_list(head, count_dict):
     right_half = merge_sort_linked_list(right_half, count_dict)
     return merge_linked_lists(left_half, right_half, count_dict)
 
+# Function to split a linked list into two halves
 def split_linked_list(head):
     slow = head
     fast = head.next
@@ -24,6 +27,7 @@ def split_linked_list(head):
     slow.next = None
     return head, right_half
 
+#Function to merge two sorted linked lists
 def merge_linked_lists(left, right, count_dict):
     dummy = LinkedListNode(None)
     curr = dummy
@@ -43,6 +47,7 @@ def merge_linked_lists(left, right, count_dict):
         curr.next = right
     return dummy.next
 
+# Function to sort a file using merge sort
 def sort_file(file_name):
     with open(file_name, 'r') as f:
         lines = f.readlines()
@@ -59,11 +64,13 @@ def sort_file(file_name):
         sorted_data = merge_sort_linked_list(data, count_dict)
         return sorted_data, count_dict
 
+#main function to process input files and output sorted files
 def main():
     input_dirs = ['./50input', './bigInput']
     output_dir = './MergeSortOutput'
     os.makedirs(output_dir, exist_ok=True)
-    
+
+    # Iterate through input files, sort them, and write the results to output files
     for input_dir in input_dirs:
         input_files = glob.glob(input_dir + '/*.dat')
         for input_file in input_files:

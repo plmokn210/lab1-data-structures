@@ -1,11 +1,13 @@
 import os
 import glob
 
+# Define a class for LinkedListNode
 class LinkedListNode:
     def __init__(self, data):
         self.data = data
         self.next = None
 
+#function to perform quick sort on a list with a provided count_dict for comparisons and exchanges
 def quick_sort(arr, left, right, count_dict):
     if left >= right:
         return
@@ -15,6 +17,8 @@ def quick_sort(arr, left, right, count_dict):
 
     i = left
     j = right
+
+    #main loop for quick sort
     while i <= j:
         count_dict['comparisons'] += 1
         while arr[i] < pivot:
@@ -26,16 +30,18 @@ def quick_sort(arr, left, right, count_dict):
             count_dict['comparisons'] += 1
             j -= 1
 
+        # Swap elements if necessary
         if i <= j:
             arr[i], arr[j] = arr[j], arr[i]
             count_dict['exchanges'] += 1
             i += 1
             j -= 1
 
+    #Recursively sort left and right partitions
     quick_sort(arr, left, j, count_dict)
     quick_sort(arr, i, right, count_dict)
 
-
+# Function to sort a file using quick sort
 def sort_file(file_name):
     with open(file_name, 'r') as f:
         lines = f.readlines()
@@ -56,17 +62,19 @@ def sort_file(file_name):
             arr.append(curr.data)
             curr = curr.next
 
-        # Perform quicksort
+        #perform quicksort
         count_dict = {'comparisons': 0, 'exchanges': 0}
         quick_sort(arr, 0, len(arr) - 1, count_dict)
 
         return arr, count_dict
 
+# Main function to process input files and output sorted files
 def main():
     input_dirs = ['./50input', './bigInput']
     output_dir = './median3Output'
     os.makedirs(output_dir, exist_ok=True)  # Create output directory if it doesn't exist
 
+    #iterate through input files, sort them, and write the results to output files
     for input_dir in input_dirs:
         input_files = glob.glob(input_dir + '/*.dat')
         for input_file in input_files:
